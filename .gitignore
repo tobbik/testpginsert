@@ -3,4 +3,6 @@
 **/__pycache__/*
 **/*~
 psycopg/venv/**
+node-pg/node_modules/**
+node-libpq/node_modules/**
 words.txt

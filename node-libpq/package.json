@@ -1,0 +1,9 @@
+{
+  "name"          : "node-ingester",
+  "description"   : "Tes node-postgres ingestion performance",
+  "version"       : "0.0.1",
+  "private"       : true,
+  "dependencies" : {
+    "libpq"            : "^1.8.0"
+  }
+}

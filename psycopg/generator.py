@@ -7,7 +7,7 @@ class Generator:
     end   = datetime(2014, 1, 1, 0, 0, 0, 0).timestamp( )
 
     def __init__( self ):
-        with open('../words.txt') as f:
+        with open( '../words.txt' ) as f:
             self.words = f.read( ).splitlines( )
         self.length = len( self.words )
 
@@ -19,7 +19,7 @@ class Generator:
         for x in range( 0, random.randint( lower, upper ) ):
             p.append( self.words[ random.randint( 0, self.length-1 ) ] )
         return ' '.join( p )
- 
+
     def gettimestamp( self ):
         return datetime.fromtimestamp( random.randint( self.start, self.end ) )
 

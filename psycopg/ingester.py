@@ -2,14 +2,14 @@ import os,sys,random
 import cProfile
 import psycopg2
 from generator import Generator
-#sys.path.append( '../' )
 
 random.seed( 1 )
 class Ingester:
     generator  = Generator()
 
-    def __init__( self, conn: object ):
+    def __init__( self, domax,conn: object ):
         self.conn    = conn
+        self.domax   = domax
 
     def dispose( self ):
         pass
@@ -19,7 +19,7 @@ class Ingester:
         profiler.enable( )
         cursor = self.conn.cursor( )
         for tl in range( 0, 1000 ):
-            groups = random.randint( 1, 3 )
+            groups = 3 if self.domax else random.randint( 1, 3 )
             t_q = self.generator.get_toplevel( groups )
             print( tl )
             cursor.execute( t_q )
@@ -49,5 +49,5 @@ if __name__ == '__main__':
 
 
 
-    ingester = Ingester( conn )
+    ingester = Ingester( True, conn )
     ingester.walker( )

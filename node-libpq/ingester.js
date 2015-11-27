@@ -14,6 +14,7 @@ Ingester = function( max )
 
 Ingester.prototype.walker = function( )
 {
+	this.conn.exec( 'BEGIN;' );
 	for (var tl=0; tl<1000; tl++)
 	{
 		var groups = (this.max) ? 3 : Generator.randint( 1, 3 );
@@ -23,6 +24,7 @@ Ingester.prototype.walker = function( )
 		//console.log( this.conn.getvalue( 0 ) );
 		this.handle_sub( this.conn.getvalue(0), groups );
 	}
+	this.conn.exec( 'COMMIT;' );
 	this.conn.finish( );
 };
 

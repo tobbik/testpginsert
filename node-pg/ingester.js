@@ -8,6 +8,7 @@ function* querygen( max )
 	var tl = 0;
 	var last_top_id = 0;
 	var last_sub_id = 0;
+	yield 'BEGIN;';
 	while (tl<1000)
 	{
 		tl++;
@@ -24,6 +25,7 @@ function* querygen( max )
 			}
 		}
 	}
+	yield 'COMMIT;';
 };
 
 var gen = querygen( true );
@@ -35,12 +37,13 @@ var id     = 0;
 var runQuery = function( )
 {
 	var t_q = gen.next( id );
-	console.log( id, t_q );
+	//console.log( id, t_q );
 	if (! t_q.done )
 	{
 		client.query( t_q.value, function( err, rows ) {
 			if(err) throw err ;
-			id = rows[ 0 ].toplevel_id;
+			if (rows.length>0)
+				id = rows[ 0 ].toplevel_id;
 			runQuery( );
 		} );
 	}

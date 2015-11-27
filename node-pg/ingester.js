@@ -10,6 +10,7 @@ function* querygen( max )
 	var last_sub_id = 0;
 	while (tl<1000)
 	{
+		tl++;
 		var groups = ( max ) ? 3 : Generator.randint( 1, 3 );
 		var t_q = generator.get_toplevel( groups );
 		last_top_id = yield t_q;
@@ -31,23 +32,26 @@ var client = new Pg( );
 var id     = 0;
 
 
-var run = true;
+var runQuery = function( )
+{
+	var t_q = gen.next( id );
+	console.log( id, t_q );
+	if (! t_q.done )
+	{
+		client.query( t_q.value, function( err, rows ) {
+			if(err) throw err ;
+			id = rows[ 0 ].toplevel_id;
+			runQuery( );
+		} );
+	}
+	else
+	{
+		client.end( );
+	}
+};
+
 client.connect( db_str, function( err ) {
 	if(err) throw err;
-	var runQuery = function( )
-	{
-		var t_q = gen.next( id );
-		if (t_q)
-		{
-			client.query( t_q.value, function( err, rows ) {
-				if(err) throw err ;
-				//console.log(rows)
-				id = rows[ 0 ].toplevel_id;
-				if( id != 1001 ) runQuery( );
-				else client.end();
-			} );
-		}
-	};
 
 	runQuery( );
 } );

@@ -18,7 +18,7 @@ Ingester.prototype.walker = function( )
 	this.conn.exec( 'BEGIN;' );
 	for (var tl=0; tl<1000; tl++)
 	{
-		var groups = (this.max) ? 3 : Generator.randint( 1, 3 );
+		var groups = (this.max) ? 3 : this.generator.randint( 1, 3 );
 		var t_q = this.generator.get_toplevel( groups );
 		console.log( tl );
 		this.conn.exec( t_q );
@@ -37,7 +37,8 @@ Ingester.prototype.handle_sub = function( tl_id, groups )
 {
 	for (var g=1; g<groups; g++ )
 	{
-		for (var o=1; o<15; o++)
+		var subitems = this.generator.randint( 1, 15 );
+		for (var o=1; o<subitems; o++)
 		{
 			var s_q = this.generator.get_sublevel( tl_id, g, o );
 			this.conn.exec( s_q );
@@ -45,5 +46,5 @@ Ingester.prototype.handle_sub = function( tl_id, groups )
 	}
 };
 
-ing = new Ingester( true );
+ing = new Ingester( false );
 ing.walker();

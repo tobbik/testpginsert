@@ -1,5 +1,6 @@
 var fs   = require( 'fs' ),
     util = require( 'util' );
+var Rng  = require( './rng' );
 
 
 Generator = function( )
@@ -8,25 +9,27 @@ Generator = function( )
 	this.end    = new Date( 2014, 1, 1, 0, 0, 0, 0).getTime( )
 	this.words  = fs.readFileSync( '../words.txt' ).toString( ).split( '\n' );
 	this.length = this.words.length - 1;
+	this.rng    = new Rng( );
+	this.rng.init( [4,12,78,43,213,178,34,17] );
 };
 
-Generator.randint = function( min, max )
+Generator.prototype.randint = function( min, max )
 {
-	return Math.floor( Math.random( ) * (max - min) ) + min;
+	return Math.floor( this.rng.next_float( ) * (max - min) ) + min;
 }
 
 
 Generator.prototype.getword = function( )
 {
-	return this.words[ Generator.randint( 0, this.length ) ];
+	return this.words[ this.randint( 0, this.length ) ];
 };
 
 Generator.prototype.getphrase = function( lower, upper )
 {
 	var p = [];
-	for (var x = 0; x < Generator.randint( lower, upper ); x++ )
+	for (var x = 0; x < this.randint( lower, upper ); x++ )
 	{
-		p.push( this.words[ Generator.randint( 0, this.length ) ] )
+		p.push( this.words[ this.randint( 0, this.length ) ] )
 	}
 	return p.join(' ' );
 };
@@ -34,7 +37,7 @@ Generator.prototype.getphrase = function( lower, upper )
 
 Generator.prototype.gettimestamp = function(  )
 {
-	return new Date( Generator.randint( this.start, this.end ) );
+	return new Date( this.randint( this.start, this.end ) );
 };
 
 Generator.prototype.get_toplevel = function( groups )
@@ -51,7 +54,7 @@ Generator.prototype.get_toplevel = function( groups )
 		groups,
 		this.getword(),      // TODO: make real UPC
 		this.gettimestamp().toISOString( ),
-		(Generator.randint( 1, 100) %2) ? "True" : "False",
+		(this.randint( 1, 100) %2) ? "True" : "False",
 		this.getphrase(2,5),
 		this.getword(),
 		this.getphrase(5,12),
@@ -72,7 +75,7 @@ Generator.prototype.get_sublevel = function( toplevel_id, grouping, order_number
 		toplevel_id,
 		grouping,
 		order_number,
-		(Generator.randint( 1, 100) %2) ? "True" : "False",
+		(this.randint( 1, 100) %2) ? "True" : "False",
 		this.getword(),      // TODO: make real UPC
 		this.getphrase(4,10),
 
@@ -82,7 +85,7 @@ Generator.prototype.get_sublevel = function( toplevel_id, grouping, order_number
 		this.getword(),
 		this.getphrase(5,12),
 		this.getphrase(4,9),
-		Generator.randint(23,500)
+		this.randint(23,500)
 	);
 };
 

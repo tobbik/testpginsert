@@ -14,13 +14,14 @@ function* querygen( max )
 	while (tl<1000)
 	{
 		tl++;
-		var groups = ( max ) ? 3 : Generator.randint( 1, 3 );
+		var groups = ( max ) ? 3 : generator.randint( 1, 3 );
 		var t_q = generator.get_toplevel( groups );
 		last_top_id = yield t_q;
 		console.log( last_top_id );
 		for (var g=1; g<groups; g++ )
 		{
-			for (var o=1; o<15; o++)
+			var subitems = generator.randint( 1, 15 );
+			for (var o=1; o<subitems; o++)
 			{
 				var s_q = generator.get_sublevel( last_top_id, g, o );
 				last_sub_id = yield  s_q;
@@ -30,7 +31,7 @@ function* querygen( max )
 	yield 'COMMIT;';
 };
 
-var gen = querygen( true );
+var gen = querygen( false);
 
 var client = new Pg( );
 var id     = 0;

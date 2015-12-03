@@ -4,5 +4,5 @@
 **/*~
 psycopg/venv/**
 node-pg/node_modules/**
-node-libpq/node_modules/**
+node-pq/node_modules/**
 words.txt

@@ -9,6 +9,7 @@ Ingester = function( max )
 	this.conn      = new PQ();
 	this.conn.connectSync( db_str );
 	this.max       = max;
+	this.s_date_time = new Date( );
 };
 
 
@@ -26,6 +27,10 @@ Ingester.prototype.walker = function( )
 	}
 	this.conn.exec( 'COMMIT;' );
 	this.conn.finish( );
+	var s_date_time_end = new Date( );
+	console.log( '                     Result:        ' +
+			+ (s_date_time_end.getTime()-this.s_date_time.getTime())/1000
+			+ ' seconds' );
 };
 
 Ingester.prototype.handle_sub = function( tl_id, groups )

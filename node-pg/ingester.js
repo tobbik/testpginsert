@@ -1,6 +1,8 @@
-var Generator = require( '../node-libpq/generator' );
+var Generator = require( '../node-pq/generator' );
 var Pg        = require( 'pg-native' );
 var db_str = "postgres://postgres:password@localhost:5432/inserttest";
+
+var s_date_time = new Date( );
 
 function* querygen( max )
 {
@@ -33,7 +35,6 @@ var gen = querygen( true );
 var client = new Pg( );
 var id     = 0;
 
-
 var runQuery = function( )
 {
 	var t_q = gen.next( id );
@@ -50,6 +51,10 @@ var runQuery = function( )
 	else
 	{
 		client.end( );
+		var s_date_time_end = new Date( );
+		console.log( '                     Result:        ' +
+				+ (s_date_time_end.getTime()-s_date_time.getTime())/1000
+				+ ' seconds' );
 	}
 };
 

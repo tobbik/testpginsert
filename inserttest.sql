@@ -6,6 +6,7 @@
 -- Drop tables in (reversed) dependency order
 DROP TABLE IF EXISTS sublevel;
 DROP TABLE IF EXISTS toplevel;
+DROP TABLE IF EXISTS toplevelj;
 
 
 CREATE TABLE toplevel (
@@ -40,5 +41,15 @@ CREATE TABLE sublevel (
 	description2    TEXT                ,--NOT NULL,
 	description1    TEXT                ,--NOT NULL,
 	length          INTEGER
+);
+
+
+
+CREATE TABLE toplevelj (
+	toplevel_id     serial                        PRIMARY KEY,
+	groups          INTEGER              NOT NULL,
+	upc             TEXT                 NOT NULL,
+	value           jsonb                NOT NULL,
+	created_at      TIMESTAMP	          NOT NULL
 );
 

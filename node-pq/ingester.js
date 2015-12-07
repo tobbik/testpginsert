@@ -10,17 +10,18 @@ Ingester = function( max )
 	this.conn.connectSync( db_str );
 	this.max       = max;
 	this.s_date_time = new Date( );
+	this.tops      = 0;
+	this.subs      = 0;
 };
 
 
 Ingester.prototype.walker = function( )
 {
 	this.conn.exec( 'BEGIN;' );
-	for (var tl=0; tl<1000; tl++)
+	for (var tl=0; tl<10000; tl++)
 	{
 		var groups = (this.max) ? 3 : this.generator.randint( 1, 3 );
 		var t_q = this.generator.get_toplevel( groups );
-		console.log( tl );
 		this.conn.exec( t_q );
 		//console.log( this.conn.getvalue( 0 ) );
 		this.handle_sub( this.conn.getvalue(0), groups );
@@ -28,18 +29,22 @@ Ingester.prototype.walker = function( )
 	this.conn.exec( 'COMMIT;' );
 	this.conn.finish( );
 	var s_date_time_end = new Date( );
-	console.log( '                     Result:        ' +
-			+ (s_date_time_end.getTime()-this.s_date_time.getTime())/1000
-			+ ' seconds' );
+	console.log( 'TopLevels: %d    SubLevels: %d    Time: %s Seconds   ',
+		this.tops, this.subs,
+		(s_date_time_end.getTime()-this.s_date_time.getTime())/1000
+	);
 };
 
 Ingester.prototype.handle_sub = function( tl_id, groups )
 {
+	console.log( tl_id );
+	this.tops++;
 	for (var g=1; g<groups; g++ )
 	{
 		var subitems = this.generator.randint( 1, 15 );
 		for (var o=1; o<subitems; o++)
 		{
+			this.subs++;
 			var s_q = this.generator.get_sublevel( tl_id, g, o );
 			this.conn.exec( s_q );
 		}

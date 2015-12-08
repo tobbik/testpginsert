@@ -1,27 +1,32 @@
-import random
+import math
 from datetime import datetime
+from rng import Rng
 
-random.seed( 1 )
 class Generator:
     start = datetime(1980, 1, 1, 0, 0, 0, 0).timestamp( )
     end   = datetime(2014, 1, 1, 0, 0, 0, 0).timestamp( )
+
+
+    def randint( self, minimum, maximum ):
+        return math.floor( self.rng.next_float( ) * (maximum - minimum) ) + minimum;
 
     def __init__( self ):
         with open( '../words.txt' ) as f:
             self.words = f.read( ).splitlines( )
         self.length = len( self.words )
+        self.rng    = Rng( [82,101,14,7,213,234,54,123,253] );
 
     def getword( self):
-        return self.words[ random.randint( 0, self.length-1 ) ]
+        return self.words[ self.randint( 0, self.length-1 ) ]
 
     def getphrase( self, lower, upper ):
         p = []
-        for x in range( 0, random.randint( lower, upper ) ):
-            p.append( self.words[ random.randint( 0, self.length-1 ) ] )
+        for x in range( 0, self.randint( lower, upper ) ):
+            p.append( self.words[ self.randint( 0, self.length-1 ) ] )
         return ' '.join( p )
 
     def gettimestamp( self ):
-        return datetime.fromtimestamp( random.randint( self.start, self.end ) )
+        return datetime.fromtimestamp( self.randint( self.start, self.end ) )
 
     def get_toplevel( self, groups ):
         return """INSERT INTO toplevel (
@@ -36,7 +41,7 @@ class Generator:
            groups,
            self.getword(),      # TODO: make real UPC
            self.gettimestamp().isoformat( ),
-           "True" if random.randint(1,100) % 2 == 0  else "False",
+           "True" if self.randint(1,100) % 2 == 0  else "False",
            self.getphrase(2,5),
            self.getword(),
            self.getphrase(5,12),
@@ -54,7 +59,7 @@ class Generator:
            toplevel_id,
            grouping,
            order_number,
-           "True" if random.randint(1,100) % 2 == 0  else "False",
+           "True" if self.randint(1,100) % 2 == 0  else "False",
            self.getword(),      # TODO: make real UPC
            self.getphrase(4,10),
 
@@ -65,7 +70,7 @@ class Generator:
            self.getphrase(5,12),
            self.getphrase(4,9),
 
-           random.randint(23,500)
+           self.randint(23,500)
            )
 
 

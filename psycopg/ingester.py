@@ -19,7 +19,7 @@ class Ingester:
         profiler.enable( )
         cursor = self.conn.cursor( )
         for tl in range( 0, 1000 ):
-            groups = 3 if self.domax else random.randint( 1, 3 )
+            groups = 3 if self.domax else self.generator.randint( 1, 3 )
             t_q = self.generator.get_toplevel( groups )
             print( tl )
             cursor.execute( t_q )
@@ -32,7 +32,8 @@ class Ingester:
 
     def handle_sub( self, cursor, tl_id, groups ):
         for g in range( 1, groups ):
-            for o in range( 1, 15 ):
+            subitems = self.generator.randint( 1, 15 );
+            for o in range( 1, subitems ):
                 s_q = self.generator.get_sublevel( tl_id, g, o )
                 cursor.execute( s_q )
                 sl_id = cursor.fetchone( )[ 0 ]
@@ -49,5 +50,5 @@ if __name__ == '__main__':
 
 
 
-    ingester = Ingester( True, conn )
+    ingester = Ingester( False, conn )
     ingester.walker( )

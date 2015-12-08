@@ -18,7 +18,7 @@ Ingester = function( max )
 Ingester.prototype.walker = function( )
 {
 	this.conn.exec( 'BEGIN;' );
-	for (var tl=0; tl<10000; tl++)
+	for (var tl=0; tl<1000; tl++)
 	{
 		var groups = (this.max) ? 3 : this.generator.randint( 1, 3 );
 		var t_q = this.generator.get_toplevel( groups );

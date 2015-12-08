@@ -12,7 +12,7 @@ function* querygen( max )
 	var last_top_id = 0;
 	var last_sub_id = 0;
 	yield 'BEGIN;';
-	while (tops<10000)
+	while (tops<1000)
 	{
 		tops++;
 		var groups = ( max ) ? 3 : generator.randint( 1, 3 );

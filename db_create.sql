@@ -1,0 +1,2 @@
+DROP   DATABASE IF EXISTS inserttest;
+CREATE DATABASE inserttest WITH OWNER postgres ENCODING 'UTF8';

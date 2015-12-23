@@ -4,12 +4,12 @@ Psycopg2 version
 Run
 ---
  
-   - time python3 ingester.py
+ - source ./venv/bin/activate
+ - time python3 ingester.py
 
 
 Requrements
 -----------
-
 
  - install virtualenv (eg. sudo pacman -S python-virtualenv)
  - setup virtualenv (covered in ../prepare.sh)

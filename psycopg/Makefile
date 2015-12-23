@@ -10,4 +10,5 @@ run:
 
 clean:
 	rm -rf $(VENV)
-	rm -rf __pychache__
+	rm -rf __pycache__
+	rm -f ../words.txt

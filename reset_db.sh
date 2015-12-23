@@ -9,4 +9,5 @@ docker ps -a | grep -qi "$POSTGRESNAME" || \
 # start the docker container if it is not running
 docker ps | grep -qi "$POSTGRESNAME" || docker start "$POSTGRESNAME" && sleep 5s
 
-PGPASSWORD=password psql -h localhost -U postgres -f inserttest.sql
+PGPASSWORD=password psql -h localhost -U postgres -f db_create.sql
+PGPASSWORD=password psql -h localhost -U postgres -f db_ddl.sql

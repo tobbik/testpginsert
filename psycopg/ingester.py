@@ -1,9 +1,8 @@
-import os,sys,random
+import os,sys
 import cProfile
 import psycopg2
 from generator import Generator
 
-random.seed( 1 )
 class Ingester:
     generator  = Generator()
 

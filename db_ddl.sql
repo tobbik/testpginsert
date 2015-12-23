@@ -1,6 +1,3 @@
---DROP   DATABASE IF EXISTS inserttest;
---CREATE DATABASE inserttest WITH OWNER postgres ENCODING 'UTF8';
-
 \connect inserttest
 
 -- Drop tables in (reversed) dependency order
